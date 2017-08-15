@@ -1,0 +1,247 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "This API lets UK Business registered customers fetch their invoice details based on contract account number and invoice number within a date range for a period of up to 12 months.",
+    "version" : "1.0.1",
+    "title" : "Invoices",
+    "contact" : {
+      "email" : "KhaisarPasha.Muhammed1@britishgas.co.uk"
+    }
+  },
+  "host" : "localhost:7001",
+  "basePath" : "/api/secure/business",
+  "tags" : [ {
+    "name" : "invoices",
+    "description" : "Retrieves invoice details"
+  } ],
+  "schemes" : [ "http" ],
+  "paths" : {
+    "/contract-accounts/{contractAccountNumber}/invoices" : {
+      "get" : {
+        "tags" : [ "invoices" ],
+        "summary" : "retrieve invoices for the account number",
+        "description" : "Retrieve invoices for the given account number within a date range.",
+        "operationId" : "retrieveInvoices",
+        "produces" : [ "application/vnd.api+json" ],
+        "parameters" : [ {
+          "name" : "contractAccountNumber",
+          "in" : "path",
+          "description" : "contract Account Number",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "fromDate",
+          "in" : "query",
+          "description" : "indicates start date [dd/MM/yyyy], from when invoices to be fetched in the range of 12 months",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "toDate",
+          "in" : "query",
+          "description" : "indicates end date [dd/MM/yyyy], till when invoices to be fetched in the range of 12 months",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_200"
+            }
+          },
+          "400" : {
+            "description" : "BAD Request - Input contractAccountNumber pattern is invalid",
+            "schema" : {
+              "$ref" : "#/definitions/inline_response_400"
+            }
+          }
+        }
+      }
+    },
+    "/contract-accounts/{contractAccountNumber}/invoices/{invoiceIds}" : {
+      "get" : {
+        "tags" : [ "invoices" ],
+        "summary" : "downloads invoices for invoice numbers",
+        "description" : "Downloads invoices for the given invoice numbers",
+        "operationId" : "viewDownloadInvoices",
+        "produces" : [ "application/zip", "application/pdf" ],
+        "parameters" : [ {
+          "name" : "contractAccountNumber",
+          "in" : "path",
+          "description" : "contract Account Number",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "invoiceIds",
+          "in" : "path",
+          "description" : "invoice numbers to be fetched ",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Invoice"
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "Invoice" : {
+      "type" : "object",
+      "required" : [ "amount", "contract-account-number", "date", "id", "status", "type" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "705311990",
+          "description" : "Unique identifier which holds the invoice id"
+        },
+        "date" : {
+          "type" : "string",
+          "example" : "16/02/2017",
+          "description" : "Date on which invoice is generated"
+        },
+        "amount" : {
+          "type" : "number",
+          "format" : "double",
+          "example" : 114.0,
+          "description" : "Gross amount for the invoice"
+        },
+        "status" : {
+          "type" : "string",
+          "example" : "debit",
+          "description" : "Represents the status of invoice",
+          "enum" : [ "debit", "credit" ]
+        },
+        "type" : {
+          "type" : "string",
+          "example" : "Invoice",
+          "description" : "Represents the type of invoice",
+          "enum" : [ "Invoice", "Credit note" ]
+        },
+        "contract-account-number" : {
+          "type" : "string",
+          "example" : "6000058173",
+          "description" : "Contract account number for the generated invoice"
+        }
+      }
+    },
+    "inline_response_200_json" : {
+      "properties" : {
+        "version" : {
+          "type" : "string",
+          "example" : "1.0"
+        }
+      }
+    },
+    "inline_response_200_links" : {
+      "properties" : {
+        "self" : {
+          "type" : "string",
+          "example" : "/api/secure/business/contract-accounts/6000058173/invoices?fromDate=16/02/2017&toDate=22/05/2017"
+        }
+      }
+    },
+    "inline_response_200_links_1" : {
+      "properties" : {
+        "self" : {
+          "type" : "string",
+          "example" : "/api/secure/business/contract-accounts/6000058173/invoices/705311990"
+        }
+      }
+    },
+    "inline_response_200_data" : {
+      "required" : [ "id", "type" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "705311990"
+        },
+        "type" : {
+          "type" : "string",
+          "example" : "invoice"
+        },
+        "attributes" : {
+          "$ref" : "#/definitions/Invoice"
+        },
+        "links" : {
+          "$ref" : "#/definitions/inline_response_200_links_1"
+        }
+      }
+    },
+    "inline_response_200" : {
+      "required" : [ "data" ],
+      "properties" : {
+        "json" : {
+          "$ref" : "#/definitions/inline_response_200_json"
+        },
+        "links" : {
+          "$ref" : "#/definitions/inline_response_200_links"
+        },
+        "data" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_200_data"
+          }
+        }
+      }
+    },
+    "inline_response_400_source" : {
+      "properties" : {
+        "parameter" : {
+          "type" : "string",
+          "example" : "contractAccountNumber"
+        }
+      }
+    },
+    "inline_response_400_errors" : {
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "1222319861203"
+        },
+        "status" : {
+          "type" : "string",
+          "example" : "400"
+        },
+        "code" : {
+          "type" : "string",
+          "example" : "error.input.validation.failure"
+        },
+        "title" : {
+          "type" : "string",
+          "example" : "The contractAccountNumber is not valid"
+        },
+        "detail" : {
+          "type" : "string",
+          "example" : "error.contract.account.number.pattern.invalid"
+        },
+        "source" : {
+          "$ref" : "#/definitions/inline_response_400_source"
+        }
+      }
+    },
+    "inline_response_400" : {
+      "properties" : {
+        "json" : {
+          "$ref" : "#/definitions/inline_response_200_json"
+        },
+        "errors" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/inline_response_400_errors"
+          }
+        }
+      }
+    }
+  }
+}
