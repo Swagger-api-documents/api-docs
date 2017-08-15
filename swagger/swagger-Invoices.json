@@ -8,13 +8,13 @@
       "email" : "KhaisarPasha.Muhammed1@britishgas.co.uk"
     }
   },
-  "host" : "virtserver.swaggerhub.com",
-  "basePath" : "/UKB-Digital/Invoices/1.0.0",
+  "host" : "localhost:7001",
+  "basePath" : "/api/secure/business",
   "tags" : [ {
     "name" : "invoices",
     "description" : "Retrieves invoice details"
   } ],
-  "schemes" : [ "https", "http" ],
+  "schemes" : [ "http" ],
   "paths" : {
     "/contract-accounts/{contractAccountNumber}/invoices" : {
       "get" : {
