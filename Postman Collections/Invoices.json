@@ -1,114 +1,116 @@
 {
-  "variables": [],
+  "swagger": "2.0",
   "info": {
-    "name": "Invoices",
-    "_postman_id": "896113-240cf382-81f5-713c-b2ff-2f796df9c88e",
+    "version": "1.0",
+    "title": "Invoices",
     "description": "This API lets UK Business registered customers fetch their invoice details based on contract account number and invoice number within a date range for a period of up to 12 months.",
-    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
-  },
-  "item": [
-    {
-      "_postman_id": "896113-29663d8b-3936-cc54-380c-a17689e230d6",
-      "name": "contract-accounts",
-      "description": "Folder for contract-accounts",
-      "item": [
-        {
-          "_postman_id": "896113-7fefb878-c52c-e14b-f99f-41f9365057d9",
-          "name": "retrieve invoices for the account number",
-          "request": {
-            "url": {
-              "raw": "http://localhost:7001/api/secure/business/contract-accounts/:contractAccountNumber/invoices?fromDate={{fromDate}}&toDate={{toDate}}",
-              "protocol": "http",
-              "auth": {},
-              "host": [
-                "localhost"
-              ],
-              "port": "7001",
-              "path": [
-                "api",
-                "secure",
-                "business",
-                "contract-accounts",
-                ":contractAccountNumber",
-                "invoices"
-              ],
-              "query": [
-                {
-                  "key": "fromDate",
-                  "value": "{{fromDate}}"
-                },
-                {
-                  "key": "toDate",
-                  "value": "{{toDate}}"
-                }
-              ],
-              "variable": [
-                {
-                  "value": "{{contractAccountNumber}}",
-                  "id": "contractAccountNumber"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/vnd.api+json",
-                "description": ""
-              }
-            ],
-            "body": {},
-            "description": "Retrieve invoices for the given account number within a date range."
-          },
-          "response": []
-        },
-        {
-          "_postman_id": "896113-2dc2d2c2-86d0-9a98-ff95-a28b60464dc5",
-          "name": "downloads invoices for invoice numbers",
-          "request": {
-            "url": {
-              "raw": "http://localhost:7001/api/secure/business/contract-accounts/:contractAccountNumber/invoices/:invoiceIds",
-              "protocol": "http",
-              "auth": {},
-              "host": [
-                "localhost"
-              ],
-              "port": "7001",
-              "path": [
-                "api",
-                "secure",
-                "business",
-                "contract-accounts",
-                ":contractAccountNumber",
-                "invoices",
-                ":invoiceIds"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "value": "{{contractAccountNumber}}",
-                  "id": "contractAccountNumber"
-                },
-                {
-                  "value": "{{invoiceIds}}",
-                  "id": "invoiceIds"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/zip, application/pdf",
-                "description": ""
-              }
-            ],
-            "body": {},
-            "description": "Downloads invoices for the given invoice numbers"
-          },
-          "response": []
-        }
-      ]
+    "license": {
+      "name": "MIT",
+      "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT"
     }
-  ]
+  },
+  "host": "localhost:7001",
+  "basePath": "/api/secure/business/contract-accounts/{{contractAccountNumber}}",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/invoices": {
+      "get": {
+        "description": "TODO: Add Description",
+        "summary": "retrieve invoices for the account number",
+        "tags": [
+          "contract-accounts"
+        ],
+        "operationId": "retrieve invoices for the account number",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "fromDate",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/invoices/{invoiceIds}": {
+      "get": {
+        "description": "TODO: Add Description",
+        "summary": "downloads invoices for invoice numbers",
+        "tags": [
+          "contract-accounts"
+        ],
+        "operationId": "downloads invoices for invoice numbers",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "invoiceIds",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    }
+  }
 }
